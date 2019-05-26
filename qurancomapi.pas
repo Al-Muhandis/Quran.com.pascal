@@ -39,9 +39,9 @@ type
     property Meta: TQuranAPIMeta read FMeta write FMeta;
   end;
 
-  { TQuranComVersesItem }
+  { TQuranComVerseItem }
 
-  TQuranComVersesItem=class(TCollectionItem)
+  TQuranComVerseItem=class(TCollectionItem)
   private
     Fchapter_id: Integer;
     Fhizb_number: Integer;
@@ -56,6 +56,9 @@ type
     Ftext_simple: String;
     Fverse_key: String;
     Fverse_number: Integer;
+  public
+    constructor Create;
+    constructor Create(ACollection: TCollection); override;
   published
     property id: Integer read Fid write Fid;
     property verse_number: Integer read Fverse_number write Fverse_number;
@@ -121,6 +124,7 @@ type
     Fverses_count: Word;
   public
     constructor Create(ACollection: TCollection); override;
+    constructor Create;
     destructor Destroy; override;
   published
     property id: Word read Fid write Fid;
@@ -202,6 +206,18 @@ begin
     Result+='&language='+aLanguage;
 end;
 
+{ TQuranComVerseItem }
+
+constructor TQuranComVerseItem.Create;
+begin
+  Create(nil);
+end;
+
+constructor TQuranComVerseItem.Create(ACollection: TCollection);
+begin
+  inherited Create(ACollection);
+end;
+
 { TDeStreamResponse }
 
 procedure TDeStreamResponse.DeStreamerRestoreProperty(Sender: TObject;
@@ -265,6 +281,11 @@ begin
   Fpages:=TQuranComAPIPages.Create;
 end;
 
+constructor TQuranComChapterItem.Create;
+begin
+  Create(nil);
+end;
+
 destructor TQuranComChapterItem.Destroy;
 begin
   Fpages.Free;
@@ -306,7 +327,7 @@ end;
 
 constructor TQuranComVerses.Create;
 begin
-  inherited Create(TQuranComVersesItem);
+  inherited Create(TQuranComVerseItem);
 end;
 
 { TQuranComAPIObject }

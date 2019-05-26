@@ -10,9 +10,9 @@ uses
 
 type
 
-  { TTestListVerses }
+  { TTestQuranComAPI }
 
-  TTestListVerses= class(TTestCase)
+  TTestQuranComAPI= class(TTestCase)
   private
     FConf: TMemIniFile;
     FQuranComAPI: TQuranComAPI;
@@ -26,20 +26,20 @@ type
 
 implementation
 
-{ TTestListVerses }
+{ TTestQuranComAPI }
 
-procedure TTestListVerses.ListVerses;
+procedure TTestQuranComAPI.ListVerses;
 begin
   FQuranComAPI.ListVerses(1);
 end;
 
-procedure TTestListVerses.SetUp;
+procedure TTestQuranComAPI.SetUp;
 begin
   FConf:=TMemIniFile.Create('test.ini');
   FQuranComAPI:=TQuranComAPI.Create;
 end;
 
-procedure TTestListVerses.TearDown;
+procedure TTestQuranComAPI.TearDown;
 var
   AStrings: TStringList;
 begin
@@ -51,13 +51,13 @@ begin
   FQuranComAPI.Free;
 end;
 
-procedure TTestListVerses.ListChapters;
+procedure TTestQuranComAPI.ListChapters;
 begin
   FQuranComAPI.ListChapters();
 end;
 
 initialization
 
-  RegisterTest(TTestListVerses);
+  RegisterTest(TTestQuranComAPI);
 end.
 
