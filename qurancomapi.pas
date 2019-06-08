@@ -49,7 +49,7 @@ type
     Fjuz_number: Integer;
     Fpage_number: Integer;
     Frub_number: Integer;
-    Fsajdah: Integer;
+    //Fsajdah: Integer;
     //Fsajdah_number: Integer;
     Ftext_indopak: String;
     Ftext_madani: String;
@@ -70,7 +70,7 @@ type
     property juz_number: Integer read Fjuz_number write Fjuz_number;
     property hizb_number: Integer read Fhizb_number write Fhizb_number;
     property rub_number: Integer read Frub_number write Frub_number;
-    property sajdah: Integer read Fsajdah write Fsajdah;
+    //property sajdah: Integer read Fsajdah write Fsajdah;
     //property sajdah_number: Integer read Fsajdah_number write Fsajdah_number;
     property page_number: Integer read Fpage_number write Fpage_number;
   end;
@@ -181,7 +181,7 @@ type
       {%H-}Info: PPropInfo; AValue: TJSONData; var Handled: Boolean);
     destructor Destroy; override;
     function ListChapters(const aLanguage: String = ''): TQuranComChaptersResponse;
-    function ListVerses(ChapterID: Word): TQuranComVersesResponse;
+    function ListVerses(ChapterID: Word; aPage: Word = 0): TQuranComVersesResponse;
     property Response: String read FResponse write FResponse;
   end;
 
@@ -194,9 +194,11 @@ uses
 const
   API_ENDPOINT='http://staging.quran.com:3000/api/v3/';
 
-function EndPoint_verses(ChapterID: Word): String;
+function EndPoint_verses(ChapterID: Word; aPage: Word = 0): String;
 begin
   Result:=API_ENDPOINT+'chapters/'+ChapterID.ToString+'/verses';
+  if aPage<>0 then
+    Result+='?page='+aPage.ToString;
 end;
 
 function EndPoint_chapters(const aLanguage: String = ''): String;
@@ -376,14 +378,15 @@ begin
   end;
 end;
 
-function TQuranComAPI.ListVerses(ChapterID: Word): TQuranComVersesResponse;
+function TQuranComAPI.ListVerses(ChapterID: Word; aPage: Word
+  ): TQuranComVersesResponse;
 var
   aDestreamer: TDeStreamVersesResponse;
 begin
   aDestreamer:=TDeStreamVersesResponse.Create;
   try
     FreeAndNil(FQuranComVersesResponse);
-    FQuranComVersesResponse:=aDestreamer.DeStreamResponse(EndPoint_verses(ChapterID), FResponse);
+    FQuranComVersesResponse:=aDestreamer.DeStreamResponse(EndPoint_verses(ChapterID, aPage), FResponse);
     Result:=FQuranComVersesResponse;
   finally
     aDestreamer.Free;
