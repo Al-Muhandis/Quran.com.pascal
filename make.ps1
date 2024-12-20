@@ -68,10 +68,10 @@ Function Build-Project {
         'Add dependencies:' | Out-Host
         Get-ChildItem -Filter '*.lpk' -Recurse -File –Path 'use'| Sort-Object | ForEach-Object {
             If (& $VAR.Cmd --add-package-link $_) {
-                "    [SUCCESS] add dependence $($_)"
+                "    [SUCCESS] add dependence $($_)" | Out-Host
             } Else {
-                "    [FAILED!] add dependence $($_)"
-            } | Out-Host
+                "    [FAILED!] add dependence $($_)" | Out-Host
+            }
         }
     }
     'Build projects:' | Out-Host
